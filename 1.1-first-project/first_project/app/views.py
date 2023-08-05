@@ -32,11 +32,17 @@ def time_view(request):
 
 def workdir_view(request):
     template_name = 'app/workdir.html'
-    dirs = enumerate(os.listdir())
-    workdir = {num: dir for num, dir in dirs}
-    workdirs = {}
-    # for i in workdir.items():
-    #     workdirs[] =
-    #
-    #     print(': '.join(str(el) for el in i))
-    return render(request, template_name, {"workdir": workdir.items()})
+    dirs = list(os.listdir())
+    print(dirs)
+
+    # workdir = {num: dir for num, dir in dirs}
+    # workdirs = {}
+    # # for i in workdir.items():
+    # #     workdirs[] =
+    # #
+    # #     print(': '.join(str(el) for el in i))
+    context = {
+        "workdirs": dirs,
+    }
+    print(dirs)
+    return render(request, template_name, context)

@@ -6,10 +6,10 @@
 </head>
 <body>
     <h3>Содержимое рабочей категории:</h3>
-    {% for item in workdir %}
-        <h1>{{ item }}</h1>
+    {% for item in workdirs %}
+        <h3><li>{{ item }}</li></h3>
         <br>
     {% endfor %}
-    <a href="{% url 'home' %}"><button>Вернутся домой</button></a>
+    <a href="{% url 'home' %}"><button>Вернуться домой</button></a>
 </body>
 </html>
