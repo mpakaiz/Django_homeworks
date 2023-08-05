@@ -24,7 +24,10 @@ def home_view(request):
 def time_view(request):
     current_time = datetime.datetime.now().time()
     msg = f'Текущее время: {current_time}'
-    return HttpResponse(msg)
+    context = {
+        'time': msg
+    }
+    return render(request, 'app/time.html', context)
 
 
 def workdir_view(request):
