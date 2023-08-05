@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Содержимое рабочей категории</title>
+</head>
+<body>
+    <h3>Содержимое рабочей категории:</h3>
+    {% for item in workdir %}
+        <h1>{{ item }}</h1>
+        <br>
+    {% endfor %}
+    <a href="{% url 'home' %}"><button>Вернутся домой</button></a>
+</body>
+</html>
