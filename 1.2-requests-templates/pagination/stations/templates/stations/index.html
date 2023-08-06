@@ -20,6 +20,9 @@
     <link rel="stylesheet" href="{% static "css/skeleton.css" %}">
 </head>
 <body>
+
+
+
 <div class="container">
     <div class="row">
         <table class="u-full-width">
@@ -31,7 +34,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for station in bus_stations %}
+            {% for station in page %}
                 <tr>
                     <td>{{ station.Name }}</td>
                     <td>{{ station.Street }}</td>
