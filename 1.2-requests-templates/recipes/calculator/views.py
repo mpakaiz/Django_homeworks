@@ -29,12 +29,14 @@ DATA = {
 #   }
 # }
 
+
 def main(request):
+
     pages = {
         'Главная страница': reverse('home'),
-        'Омлет': reverse('omlet'),
-        'Паста': reverse('pasta'),
-        'Бутер': reverse('buter')
+        'Омлет': 'omlet',
+        'Паста': 'pasta',
+        'Бутер': 'buter'
     }
 
     context = {
@@ -42,39 +44,16 @@ def main(request):
     }
     return render(request, 'calculator/main.html', context)
 
-def recipe_omlet(request):
+
+def dish_view(request, dish):
 
     data = DATA
     servings = int(request.GET.get('servings', 1))
-    for ingr, count in DATA['omlet'].items():
-        data['omlet'][ingr] = count*servings
+    for ingr, count in DATA[dish].items():
+        data[dish][ingr] = count*servings
 
     context = {
-        'recipe': data['omlet']
+        'recipe': data[dish]
     }
 
-    return render(request, 'calculator/index.html', context)
-
-def recipe_pasta(request):
-
-    data = DATA
-    servings = int(request.GET.get('servings', 1))
-    for ingr, count in DATA['pasta'].items():
-        data['pasta'][ingr] = count * servings
-
-    context = {
-        'recipe': data['pasta']
-    }
-    return render(request, 'calculator/index.html', context)
-
-def recipe_buter(request):
-
-    data = DATA
-    servings = int(request.GET.get('servings', 1))
-    for ingr, count in DATA['buter'].items():
-        data['buter'][ingr] = count * servings
-
-    context = {
-        'recipe': data['buter']
-    }
     return render(request, 'calculator/index.html', context)
