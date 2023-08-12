@@ -13,5 +13,12 @@ class Command(BaseCommand):
             phones = list(csv.DictReader(file, delimiter=';'))
 
         for phone in phones:
-            # TODO: Добавьте сохранение модели
-            pass
+            new_phone = Phone()
+            new_phone.name = phone['name']
+            new_phone.image = phone['image']
+            new_phone.price = phone['price']
+            new_phone.release_date = phone['release_date']
+            new_phone.lte_exists = phone['lte_exists']
+            new_phone.save()
+
+            self.stdout.write(self.style.SUCCESS(f'Successfully added {new_phone.name}'))
