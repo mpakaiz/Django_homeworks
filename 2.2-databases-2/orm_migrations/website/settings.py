@@ -73,9 +73,11 @@ WSGI_APPLICATION = 'website.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'netology_orm_migrations',
+        'NAME': 'school',
         'HOST': '127.0.0.1',
         'PORT': '5432',
+        'USER': 'postgres',
+        'PASSWORD': 'pos0295485!'
     }
 }
 
@@ -130,4 +132,6 @@ try:
     from .settings_local import *
 except ImportError:
     pass
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
