@@ -20,9 +20,12 @@ class ListCreateAPIView(ListCreateAPIView):
         return Response({'status': 'OK'})
 
 class RetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Sensor.objects.all()
+    # queryset = Sensor.objects.all()
     serializer_class = SensorSerializer
-    lookup_fields = 'id'
+    # lookup_fields = 'id'
+
+    def get_queryset(self):
+        return Sensor.objects.all()
 
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
