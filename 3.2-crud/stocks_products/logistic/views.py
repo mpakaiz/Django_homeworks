@@ -1,4 +1,5 @@
 from rest_framework.filters import SearchFilter
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.viewsets import ModelViewSet
 
 from logistic.models import Product, Stock
@@ -11,10 +12,11 @@ class ProductViewSet(ModelViewSet):
     filter_backends = [SearchFilter]
     filterset_fields = ['product']
     search_fields = ['title',]
-
+    pagination_class = LimitOffsetPagination
 
 class StockViewSet(ModelViewSet):
     queryset = Stock.objects.all()
     serializer_class = StockSerializer
     filter_backends = [SearchFilter]
     search_fields = ['products__title']
+    pagination_class = LimitOffsetPagination

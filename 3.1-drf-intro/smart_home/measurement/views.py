@@ -16,7 +16,6 @@ class ListCreateAPIView(ListCreateAPIView):
 
     def post(self, request):
         data = request.data
-        print(data)
         return Response({'status': 'OK'})
 
 class RetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
