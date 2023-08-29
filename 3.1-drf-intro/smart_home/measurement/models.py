@@ -13,5 +13,5 @@ class Measurement(models.Model):
     sensors = models.ForeignKey(
         Sensor,
         on_delete=models.CASCADE,
-        related_name='sensor_id',
+        related_name='measurements',
     )
