@@ -1,17 +1,18 @@
 # примеры API-запросов
 
-@baseUrl = https://localhost:8000/api
+@baseUrl = http://localhost:8000/api
 
 # получение объявлений
 GET {{baseUrl}}/advertisements/
 Content-Type: application/json
+
 
 ###
 
 # создание объявления
 POST {{baseUrl}}/advertisements/
 Content-Type: application/json
-Authorization: Token 902ef055a9ac93f18327f1f9c45ab059f1a62c7d
+Authorization: Token 399c808ceb86842bee989b5239c0edba225e8c1a
 
 {
   "title": "Шкаф IKEA",
@@ -20,10 +21,34 @@ Authorization: Token 902ef055a9ac93f18327f1f9c45ab059f1a62c7d
 
 ###
 
-# попытка поменять объявление
-PATCH {{baseUrl}}/advertisements/1/
+# создание объявления 2
+POST {{baseUrl}}/advertisements/
 Content-Type: application/json
-Authorization: Token 902ef055a9ac93f18327f1f9c45ab059f1a62c7d
+Authorization: Token 399c808ceb86842bee989b5239c0edba225e8c1a
+
+{
+  "title": "Тумба IKEA",
+  "description": "оригинал"
+}
+
+###
+
+# создание объявления 3 от второго юзера
+POST {{baseUrl}}/advertisements/
+Content-Type: application/json
+Authorization: Token 2a031558b753aa0a7b3d6c4d9b9700f3592ed218
+
+{
+  "title": "Лампочки",
+  "description": "200Вт"
+}
+
+###
+
+# попытка поменять объявление от первого пользователя
+PATCH {{baseUrl}}/advertisements/5/
+Content-Type: application/json
+Authorization: Token 399c808ceb86842bee989b5239c0edba225e8c1a
 
 {
   "status": "CLOSED"
@@ -31,8 +56,27 @@ Authorization: Token 902ef055a9ac93f18327f1f9c45ab059f1a62c7d
 
 ###
 
+# попытка поменять объявление от первого пользователя
+PATCH {{baseUrl}}/advertisements/38/
+Content-Type: application/json
+Authorization: Token 399c808ceb86842bee989b5239c0edba225e8c1a
+
+{
+  "status": "OPEN"
+}
+
+###
+
+# попытка удалить объявление от первого пользователя
+DELETE {{baseUrl}}/advertisements/38/
+Content-Type: application/json
+Authorization: Token 399c808ceb86842bee989b5239c0edba225e8c1a
+
+
+###
+
 # фильтрация по создателю
-GET {{baseUrl}}/advertisements/?creator=3
+GET {{baseUrl}}/advertisements/?creator=2
 Content-Type: application/json
 
 ###
@@ -40,3 +84,11 @@ Content-Type: application/json
 # фильтрация по дате
 GET {{baseUrl}}/advertisements/?created_at_before=2020-10-01
 Content-Type: application/json
+Authorization: Token 399c808ceb86842bee989b5239c0edba225e8c1a
+
+###
+
+# фильтрация по дате 2
+GET {{baseUrl}}/advertisements/?created_after=2020-10-01
+Content-Type: application/json
+Authorization: Token 399c808ceb86842bee989b5239c0edba225e8c1a
