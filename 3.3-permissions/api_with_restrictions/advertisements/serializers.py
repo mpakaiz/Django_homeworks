@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from advertisements.models import Advertisement
+from advertisements.models import Advertisement, Favourite
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -47,6 +47,13 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         print(f'1: {"OPEN" == self.initial_data.get("status")}')
         print(f'2: {None == self.initial_data.get("status")}')
         print(f'3: {count >= 10}')
-        if 'OPEN' == self.initial_data.get('status') and count >= 10 or None == self.initial_data.get('status') and count >= 10:
+        if self.initial_data.get('status') != 'CLOSED' and count >= 10:
             raise ValidationError('Слишком много открытых записей')
         return data
+
+class FavouriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Favourite
+        fields = "__all__"
+
+

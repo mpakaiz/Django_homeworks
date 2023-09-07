@@ -18,7 +18,7 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from advertisements.views import AdvertisementViewSet
+from advertisements.views import AdvertisementViewSet, AddToFavouritesView
 
 router = DefaultRouter()
 # TODO: подключите `AdvertisementViewSet`
@@ -27,4 +27,5 @@ router.register('advertisements', AdvertisementViewSet)
 urlpatterns = [
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
+    path('api/add_to_favourites/', AddToFavouritesView.as_view(), name='add-to-favourites')
 ] + router.urls

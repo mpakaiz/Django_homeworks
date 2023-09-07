@@ -92,3 +92,16 @@ Authorization: Token 399c808ceb86842bee989b5239c0edba225e8c1a
 GET {{baseUrl}}/advertisements/?created_after=2020-10-01
 Content-Type: application/json
 Authorization: Token 399c808ceb86842bee989b5239c0edba225e8c1a
+
+###
+
+# добавить в избранное
+POST {{baseUrl}}/add_to_favourites/
+Content-Type: application/json
+Authorization: Token 399c808ceb86842bee989b5239c0edba225e8c1a
+
+{
+  "advertisement_id": 6
+}
+
+###

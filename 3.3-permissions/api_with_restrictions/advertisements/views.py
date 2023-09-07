@@ -1,11 +1,12 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-
 from advertisements.filters import AdvertisementFilter
-from advertisements.models import Advertisement
+from advertisements.models import Advertisement, Favourite
 from advertisements.permissions import IsOwnerOrReadOnly
-from advertisements.serializers import AdvertisementSerializer
+from advertisements.serializers import AdvertisementSerializer, FavouriteSerializer
 
 
 class AdvertisementViewSet(ModelViewSet):
@@ -19,7 +20,7 @@ class AdvertisementViewSet(ModelViewSet):
     permission_classes = [IsOwnerOrReadOnly]
     filter_backends = [DjangoFilterBackend, ]
     filterset_class = AdvertisementFilter
-    filterset_fields = ['creator',]
+    # filterset_fields = ['creator',]
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
 
@@ -37,3 +38,24 @@ class AdvertisementViewSet(ModelViewSet):
         if self.action in ["create", "update", "partial_update"]:
             return [IsAuthenticated()]
         return []
+
+class AddToFavouritesView(generics.CreateAPIView):
+    serializer_class = FavouriteSerializer
+    permission_classes = [IsOwnerOrReadOnly]
+    def create(self, request, *args, **kwargs):
+        user = request.user
+        advertisement_id = request.data.get("advertisement_id")
+
+        try:
+            advertisement = Advertisement.objects.get(pk=advertisement_id)
+
+        except Advertisement.DoesNotExist:
+            return Response({"error": 'Advertisement not found'}, status=status.HTTP_400_BAD_REQUEST)
+
+        favourite = Favourite(user=user, advertisements=advertisement)
+        favourite.save()
+
+        return Response({"message: Advertisement added to favourites"}, status=status.HTTP_201_CREATED)
+
+
+
