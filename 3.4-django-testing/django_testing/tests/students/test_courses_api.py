@@ -1,13 +1,14 @@
 import pytest
 from model_bakery import baker
 from students.models import Course, Student
+import random
 
 @pytest.mark.django_db
 def test_first_course(client, user, students_factory, courses_factory):
     students = students_factory(_quantity=10)
     courses = courses_factory(_quantity=10, students=students)
 
-    first_course = Course.objects.all().first()
+    first_course = courses[0]
 
     response = client.get('/courses/')
     data = response.json()
@@ -44,12 +45,12 @@ def test_courses_filter_id(client, user, students_factory, courses_factory):
     students = students_factory(_quantity=10)
     courses = courses_factory(_quantity=10, students=students)
 
-    filtered_course = Course.objects.filter(id=24).first()
+    random_course = random.choice(courses)
 
-    response = client.get('/courses/')
+    response = client.get(f'/courses/{random_course.id}/')
     data = response.json()
 
-    assert data[2]['id'] == filtered_course.id
+    assert data['id'] == random_course.id
 
 @pytest.mark.django_db
 def test_courses_filter_name(client, user, students_factory, courses_factory):
@@ -74,7 +75,22 @@ def test_courses_create(client, user):
 def test_courses_delete(client, user):
 
     response = client.post('/courses/', data={'name': 'netology'})
-    response_delete = client.delete('/courses/43/')
+    created_course_id = response.json()['id']
+
+    response_delete = client.delete(f'/courses/{created_course_id}/')
 
     assert response_delete.status_code == 204
+
+@pytest.mark.django_db
+def test_update_course(client, user):
+    response = client.post('/courses/', data={'name': 'netology'})
+    created_course_id = response.json()['id']
+
+    response_patch = client.patch(f'/courses/{created_course_id}/', data={'name': 'netology_test'})
+
+    assert response_patch.status_code == 200
+
+    updated_course = Course.objects.get(id=created_course_id)
+    assert updated_course.name == 'netology_test'
+
 
