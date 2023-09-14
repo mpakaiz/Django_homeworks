@@ -7,7 +7,7 @@ from advertisements.filters import AdvertisementFilter
 from advertisements.models import Advertisement, Favourite
 from advertisements.permissions import IsOwnerOrReadOnly
 from advertisements.serializers import AdvertisementSerializer, FavouriteSerializer
-
+from django.db.models import Q
 
 class AdvertisementViewSet(ModelViewSet):
     """ViewSet для объявлений."""
@@ -28,12 +28,12 @@ class AdvertisementViewSet(ModelViewSet):
         user_authorization = self.request.user.is_authenticated
         if user_authorization is True:
             print('User is authorized')
-            return Advertisement.objects.all().filter(creator=user)
+            return Advertisement.objects.all().filter(Q(creator=user) | ~Q(status='DRAFT'))
         return Advertisement.objects.all().exclude(status='DRAFT')
 
 
     def get_permissions(self):
-        """Получение прав для действий."""
+
         if self.action in ["create", "update", "partial_update"]:
             return [IsAuthenticated()]
         return []
