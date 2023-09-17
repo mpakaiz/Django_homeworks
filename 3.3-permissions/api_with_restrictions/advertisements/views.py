@@ -17,7 +17,7 @@ class AdvertisementViewSet(ModelViewSet):
 
     queryset = Advertisement.objects.all()
     serializer_class = AdvertisementSerializer
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     filter_backends = [DjangoFilterBackend, ]
     filterset_class = AdvertisementFilter
     def perform_create(self, serializer):
@@ -32,15 +32,9 @@ class AdvertisementViewSet(ModelViewSet):
         return Advertisement.objects.all().exclude(status='DRAFT')
 
 
-    def get_permissions(self):
-
-        if self.action in ["create", "update", "partial_update"]:
-            return [IsAuthenticated()]
-        return []
-
 class AddToFavouritesView(generics.CreateAPIView):
     serializer_class = FavouriteSerializer
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     def create(self, request, *args, **kwargs):
         user = request.user
         advertisement_id = request.data.get("advertisement_id")
