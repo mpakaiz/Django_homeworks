@@ -10,7 +10,7 @@ def test_first_course(client, user, students_factory, courses_factory):
 
     first_course = courses[0]
 
-    response = client.get('/courses/')
+    response = client.get('/api/v1/courses/')
     data = response.json()
     assert data[0]['id'] == first_course.id
     assert response.status_code == 200
@@ -21,7 +21,7 @@ def test_courses_list(client, user, students_factory, courses_factory, limit_qua
     students = students_factory(_quantity=10)
     courses = courses_factory(_quantity=10, students=students)
 
-    response = client.get('/courses/')
+    response = client.get('/api/v1/courses/')
 
     data = response.json()
     assert len(data) == len(Course.objects.all())
@@ -34,7 +34,7 @@ def test_courses_list(client, user, students_factory, courses_factory, limit_qua
     students = students_factory(_quantity=11)
     courses = courses_factory(_quantity=11, students=students)
 
-    response = client.get('/courses/')
+    response = client.get('/api/v1/courses/')
 
     data = response.json()
     assert len(data) == len(Course.objects.all())
@@ -47,19 +47,20 @@ def test_courses_filter_id(client, user, students_factory, courses_factory):
 
     random_course = random.choice(courses)
 
-    response = client.get(f'/courses/{random_course.id}/')
+    # response = client.get(f'/api/v1/courses/{random_course.id}/')
+    response = client.get(f'/api/v1/courses/', {'id': random_course.id})
     data = response.json()
 
-    assert data['id'] == random_course.id
+    assert data[0]['id'] == random_course.id
 
 @pytest.mark.django_db
 def test_courses_filter_name(client, user, students_factory, courses_factory):
     students = students_factory(_quantity=10)
     courses = courses_factory(_quantity=10, students=students)
 
-    filtered_course = Course.objects.filter(name=courses[0].name).first()
+    filtered_course = courses[0]
 
-    response = client.get('/courses/')
+    response = client.get('/api/v1/courses/', {'name': filtered_course.name})
     data = response.json()
 
     assert data[0]['name'] == filtered_course.name
@@ -67,26 +68,26 @@ def test_courses_filter_name(client, user, students_factory, courses_factory):
 @pytest.mark.django_db
 def test_courses_create(client, user):
 
-    response = client.post('/courses/', data={'name': 'netology'})
+    response = client.post('/api/v1/courses/', data={'name': 'netology'})
 
     assert response.status_code == 201
 
 @pytest.mark.django_db
 def test_courses_delete(client, user):
 
-    response = client.post('/courses/', data={'name': 'netology'})
+    response = client.post('/api/v1/courses/', data={'name': 'netology'})
     created_course_id = response.json()['id']
 
-    response_delete = client.delete(f'/courses/{created_course_id}/')
+    response_delete = client.delete(f'/api/v1/courses/{created_course_id}/')
 
     assert response_delete.status_code == 204
 
 @pytest.mark.django_db
 def test_update_course(client, user):
-    response = client.post('/courses/', data={'name': 'netology'})
+    response = client.post('/api/v1/courses/', data={'name': 'netology'})
     created_course_id = response.json()['id']
 
-    response_patch = client.patch(f'/courses/{created_course_id}/', data={'name': 'netology_test'})
+    response_patch = client.patch(f'/api/v1/courses/{created_course_id}/', data={'name': 'netology_test'})
 
     assert response_patch.status_code == 200
 
