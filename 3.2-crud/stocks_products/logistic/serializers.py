@@ -40,9 +40,10 @@ class StockSerializer(serializers.ModelSerializer):
                     'quantity': position['quantity'],
                     'price': position['price'],
                 }
-            obj, created = StockProduct.objects.update_or_create(stock=stock, product=position['product'],
+            obj, created = StockProduct.objects.update_or_create(
+                stock=stock,
+                product=position['product'],
                 defaults=updated_values
             )
-
 
         return stock

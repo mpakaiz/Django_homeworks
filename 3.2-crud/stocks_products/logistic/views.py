@@ -13,6 +13,7 @@ class ProductViewSet(ModelViewSet):
     search_fields = ['title', 'description']
     pagination_class = LimitOffsetPagination
 
+
 class StockViewSet(ModelViewSet):
     queryset = Stock.objects.all()
     serializer_class = StockSerializer
