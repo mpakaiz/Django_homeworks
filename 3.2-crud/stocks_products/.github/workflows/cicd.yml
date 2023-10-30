@@ -51,6 +51,16 @@ jobs:
 
       - name: Тестирование
         run: python manage.py test
+        env:
+          SECRET_KEY: ${{ env.KEY_SECRET }}
+          DEBUG: ${{ env.IS_DEBUG }}
+          ALLOWED_HOSTS: ${{ env.AVAILABLE_HOSTS }}
+          DB_ENGINE: ${{ env.ENGINE }}
+          DB_USER: ${{ env.USERNAME }}
+          DB_PASSWORD: ${{ env.PASSWORD }}
+          DB_NAME: ${{ env.NAME }}
+          DB_HOST: ${{ env.HOST }}
+          DB_PORT: ${{ env.PORT }}
 
       - name: Деплой
         uses: ...
