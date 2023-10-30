@@ -63,5 +63,12 @@ jobs:
           DB_PORT: ${{ env.PORT }}
 
       - name: Деплой
-        uses: ...
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: expect /home/mpakaiz/Django_homeworks/3.2-crud/stocks_products/deploy.exp
+
+
 
