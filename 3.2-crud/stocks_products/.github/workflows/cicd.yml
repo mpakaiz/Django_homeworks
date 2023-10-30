@@ -64,10 +64,14 @@ jobs:
 
       - name: Деплой
         uses: appleboy/ssh-action@master
+        env:
+          PASSWORD: ${{ secrets.SSH_PASSWORD }}
+
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
+          envs: PASSWORD
           script: expect /home/mpakaiz/Django_homeworks/3.2-crud/stocks_products/deploy.exp
 
 
