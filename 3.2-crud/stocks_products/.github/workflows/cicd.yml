@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+      - main
+      - video
 
 jobs:
   testing:
